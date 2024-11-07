@@ -1,25 +1,48 @@
 {% extends 'base.html' %}{% block title %}{{user.full_name}}{% endblock %} {%
 block content %}
-<h1>{{ user.full_name }}</h1>
-<img src="{{user.image_url}}" />
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4">
+      <!-- User Profile -->
+      <div class="card">
+        <img
+          src="{{user.image_url}}"
+          class="card-img-top"
+          alt="{{user.full_name}}"
+        />
+        <div class="card-body">
+          <h3 class="card-title">{{ user.full_name }}</h3>
+          <div class="d-flex justify-content-between">
+            <form action="/users/{{user.id}}/edit" method="GET">
+              <button class="btn btn-primary">Edit</button>
+            </form>
+            <form action="/users/{{user.id}}/delete" , method="POST">
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<form action="/users/{{user.id}}/edit">
-  <button>Edit</button>
-</form>
+    <div class="col-md-8">
+      <!-- Posts -->
+      <h2 class="mb-3">Posts</h2>
+      <ul class="list-group mb-4">
+        {% for post in user.posts %}
+        <li class="list-group-item">
+          <a href="/posts/{{post.id}}" class="text-decoration-none"
+            >{{post.title}}</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
 
-<form action="/users/{{user.id}}/delete" , method="POST">
-  <button>Delete</button>
-</form>
-
-<h1>Posts</h1>
-<ul>
-  {% for post in user.posts %}
-  <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
-  {% endfor %}
-</ul>
-
-<form action="/users/{{user.id}}/posts/new">
-  <button>Add Post</button>
-</form>
-
+      <div class="mt-4">
+        <a href="/users/{{user.id}}/posts/new">
+          <button class="btn btn-primary">Add Post</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

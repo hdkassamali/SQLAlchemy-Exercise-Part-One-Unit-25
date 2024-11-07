@@ -1,13 +1,53 @@
 {% extends 'base.html' %} {% block title %} Edit Post: {{post.title}}{% endblock
 %} {% block content %} 
 
-<h1>Edit Post</h1>
+<div class="container mt-4" style="max-width: 700px;">
+<h1 class="mb-4">Edit Post</h1>
+
 <form action="/posts/{{post.id}}/edit" method="POST">
-    <label>Title<input type="text" name="title" value="{{post.title}}"></label>
-    <label>Content<input type="text" name="content" value="{{post.content}}"></label>
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input 
+    id="title" 
+    type="text" 
+    name="title" 
+    class="form-control"
+    value="{{post.title}}" 
+    required>
+    </div>
 
-    <a href="/users/{{post.user.id}}"><button type="button">Cancel</button></a>
+    <div class="mb-3">
+    <label for="content" class="form-label">Content</label>
+    <textarea 
+    id='content'
+    name="content" 
+    class="form-control"
+    required>{{post.content}}</textarea>
+    </div>
 
-  <button type="submit">Save Changes</button>
-</form>
+    <div class="mb-3">
+      <label class="form-label">Tags</label>
+      <div class="form-check">
+      {% for tag in tags %}
+      <input 
+        type="checkbox" 
+        name="tags" 
+        id="{{tag.name}}" 
+        value="{{tag.id}}" 
+        class="form-check-input"
+        {% if tag.id in post.tags | map(attribute='id') %} 
+        checked 
+        {% endif %}
+      />
+      <label for="{{tag.name}}" class="form-check-label">{{tag.name}}</label><br>
+      {% endfor %}
+      </div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <a href="/users/{{post.user.id}}" class="btn btn-secondary">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>
 {% endblock %}
